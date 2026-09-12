@@ -11,10 +11,16 @@ pipeline {
         }
 
         stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
+    steps {
+        sh '''
+            echo "PATH=$PATH"
+            which node || true
+            which npm || true
+            node --version || true
+            npm --version || true
+        '''
+    }
+}
 
         stage('Run Tests') {
             steps {
