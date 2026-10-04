@@ -2,7 +2,9 @@ pipeline {
     agent any
 
     environment {
-        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        // Homebrew Node.js and Java paths for macOS
+        PATH = "/opt/homebrew/opt/openjdk/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        JAVA_HOME = "/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
     }
 
     stages {
@@ -20,8 +22,15 @@ pipeline {
             steps {
                 echo 'Installing npm dependencies'
 
+                sh 'echo "Java version:"'
+                sh 'java -version'
+
+                sh 'echo "Node version:"'
                 sh 'node --version'
+
+                sh 'echo "NPM version:"'
                 sh 'npm --version'
+
                 sh 'npm install'
             }
         }
