@@ -19,6 +19,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing npm dependencies'
+
                 sh 'node --version'
                 sh 'npm --version'
                 sh 'npm install'
@@ -28,6 +29,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Running tests'
+
                 sh 'npm test || true'
             }
         }
@@ -35,6 +37,7 @@ pipeline {
         stage('Generate Coverage Report') {
             steps {
                 echo 'Generating coverage report'
+
                 sh 'npm run coverage || true'
             }
         }
@@ -42,6 +45,7 @@ pipeline {
         stage('NPM Audit (Security Scan)') {
             steps {
                 echo 'Running npm security audit'
+
                 sh 'npm audit || true'
             }
         }
@@ -79,34 +83,6 @@ pipeline {
 
         always {
             echo 'Pipeline execution finished.'
-        }
-    }
-}        }
-
-        stage('NPM Audit (Security Scan)') {
-            steps {
-                echo 'Running npm security audit'
-
-                sh 'npm audit || true'
-            }
-        }
-
-        stage('SonarCloud Analysis') {
-            steps {
-                echo 'Running SonarCloud analysis'
-
-                withCredentials([
-                    string(
-                        credentialsId: 'SONAR_TOKEN',
-                        variable: 'SONAR_TOKEN'
-                    )
-                ]) {
-                    sh '''
-                        npm install --no-save sonar-scanner
-                        ./node_modules/.bin/sonar-scanner
-                    '''
-                }
-            }
         }
     }
 }
